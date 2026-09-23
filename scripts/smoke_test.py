@@ -63,6 +63,10 @@ def main():
     for passed, name in checks:
         if not passed:
             raise RuntimeError("smoke_failed:" + name)
+    if os.getenv("INE_OCR_SMOKE_PROFILE", "r2-v1") == "r2-v1":
+        _, ready = call("/readyz")
+        if ready.get("profile") != "r2-v1" or ready.get("nameModel") != "configured" or not ready.get("crossChannelNameConsensus"):
+            raise RuntimeError("r2_profile_not_active")
     started = time.monotonic()
     status, result = call("/v1/ine/extract", body={"id": base64.b64encode(synthetic_image()).decode()})
     if status != 200 or result.get("status") != "OK":
@@ -71,6 +75,8 @@ def main():
         raise RuntimeError("synthetic_engine_unavailable")
     if not any(result.get(field) for field in ("nombres", "primerApellido", "segundoApellido")):
         raise RuntimeError("synthetic_text_not_extracted")
+    if os.getenv("INE_OCR_SMOKE_PROFILE", "r2-v1") == "r2-v1" and not result.get("processing", {}).get("nameModel", {}).get("enabled"):
+        raise RuntimeError("synthetic_r2_name_model_not_executed")
     print(json.dumps({"smoke": "passed", "input": "synthetic_in_memory", "elapsed_seconds": round(time.monotonic() - started, 2)}))
 
 

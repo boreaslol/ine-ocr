@@ -10,11 +10,13 @@
 !src/**
 !scripts/
 !scripts/fetch_wechat_qr_models.py
+!scripts/fetch_r2_models.py
+!scripts/serve_r2.py
 !scripts/prepare_models.py
 !scripts/verify_runtime.py
 !scripts/healthcheck.py
 !deploy/
-!deploy/requirements.cpu.txt
+!deploy/requirements.r2.txt
 !deploy/public-models.json
 **/__pycache__
 **/*.pyc

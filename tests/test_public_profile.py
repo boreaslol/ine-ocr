@@ -79,7 +79,7 @@ def test_credentials_are_unique_private_and_not_overwritten(tmp_path, capsys):
     assert target.read_text() == content
 
 
-def test_default_deployment_has_no_custom_weights_and_is_loopback_only():
+def test_default_deployment_bakes_r2_weights_and_is_loopback_only():
     import yaml
 
     config = yaml.safe_load((ROOT / "compose.yaml").read_text())["services"]["ocr"]
@@ -88,6 +88,9 @@ def test_default_deployment_has_no_custom_weights_and_is_loopback_only():
     assert config["mem_limit"] == "6g"
     assert config["cpus"] == 2
     assert not any("MODEL_PATH" in key for key in config["environment"])
+    container = (ROOT / "deploy/Containerfile").read_text()
+    assert "python scripts/fetch_r2_models.py" in container
+    assert 'CMD ["python", "/opt/ine-ocr/scripts/serve_r2.py"]' in container
     allowlist = (ROOT / ".dockerignore").read_text().splitlines()
     assert allowlist[0] == "**"
     assert not any(line in {"!.git", "!.env", "!artifacts/**", "!models/**"} for line in allowlist)

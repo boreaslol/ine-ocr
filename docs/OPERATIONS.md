@@ -6,7 +6,7 @@ Build on the target host from a clean checkout of the public `main` branch, usin
 
 `scripts/deployment_receipt.py` verifies the healthy container's immutable image ID, revision label, non-root/read-only configuration, loopback binding and asset manifest. It writes a local owner-only receipt under ignored `artifacts/`. Keep the previous receipt and image before upgrading. Image ID is the local content-addressed Docker image identity, not a registry manifest digest or an archive checksum.
 
-The default image includes only the public base models. The runtime manifest records actual direct dependency versions and each required model hash. Check it with `docker exec <container-id> cat /opt/ine-ocr/runtime-manifest.json`. Do not publish raw `docker inspect` or `docker compose config` output: it contains your token.
+The default image includes the complete R2 models. The runtime manifest records dependency versions, every model hash and frozen R2 settings. Check it with `docker exec <container-id> cat /opt/ine-ocr/runtime-manifest.json`. Authenticated readiness must report `profile: r2-v1`, a configured name model and enabled cross-channel consensus. Missing assets or changed settings fail rather than silently reducing functionality. Do not publish raw `docker inspect` or `docker compose config` output: it contains your token.
 
 ## Remote callers
 

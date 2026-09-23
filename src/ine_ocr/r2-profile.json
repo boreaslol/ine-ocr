@@ -1,0 +1,77 @@
+{
+  "profile": "r2-v1",
+  "license": "AGPL-3.0-only",
+  "archive": {
+    "url": "https://github.com/boreaslol/ine-ocr/releases/download/r2-models-v1/ine-ocr-r2-models-v1.tar.gz",
+    "sha256": "2d7c9b07334f062dcc8cfd545bf5ea34de5d0dae313e5c5b916238aa1b2c4876",
+    "bytes": 60807006
+  },
+  "files": {
+    "card/ine-card.onnx": {
+      "bytes": 12238528,
+      "sha256": "eed70cd4f18b9c61922ad0901f96ddb7ba9163fca347c7eea05ec5d175dda71d"
+    },
+    "name/ine-names.onnx": {
+      "bytes": 10187319,
+      "sha256": "a8e2afbbc28119ae4bab43abbe2cea526e359386030051d244f005f99e019eb5"
+    },
+    "name/ine-names.onnx.json": {
+      "bytes": 1000,
+      "sha256": "4fe7e1cbe578201a925fd904f75c61f243e3513ce05caef8c3aa92d0c5b20883"
+    },
+    "recognition/PP-OCRv6_small_rec/inference.onnx": {
+      "bytes": 21143923,
+      "sha256": "14a9e7d184b186fe9c0551737e0bfe53d0a3afee97806a0eeafc6565fc732a1d"
+    },
+    "recognition/PP-OCRv6_small_rec/inference.yml": {
+      "bytes": 150579,
+      "sha256": "ab078671bb49f06228eadccd34f1bb501e157f7a047095ffb943ba81512c77d1"
+    },
+    "recognition/PP-OCRv6_small_rec/manifest.json": {
+      "bytes": 178,
+      "sha256": "0ae7e20d663d45296e86bc96f0b75fc0bc7664144b4d9d7cc8f471cd316603db"
+    },
+    "recognition/en_PP-OCRv5_mobile_rec/inference.onnx": {
+      "bytes": 7843511,
+      "sha256": "d7becab3a62bf7af5fb1f17f4068abc3c45108a217ab26875cf7b1bcfb524a28"
+    },
+    "recognition/en_PP-OCRv5_mobile_rec/inference.yml": {
+      "bytes": 3964,
+      "sha256": "27e91d0582f40168aa218303c76e184bc78fa7a5d105aad0cfbad8458b441067"
+    },
+    "recognition/en_PP-OCRv5_mobile_rec/manifest.json": {
+      "bytes": 178,
+      "sha256": "e1608cd0c700903c604b496613a5fdd7f60882f68adaaa8d770a7d2785dfa899"
+    },
+    "source/card-architecture.json": {
+      "bytes": 2852,
+      "sha256": "043c40ec94f7345dd46d771684b6acd5eda73340e7f33a53f48b15e6bd7f1ff7"
+    },
+    "source/card.safetensors": {
+      "bytes": 6075790,
+      "sha256": "e69f00ba254ed6e6eff33a968a0f9dd0e91aa2ef717eba09240f0c374a4a8c1c"
+    },
+    "source/name-architecture.json": {
+      "bytes": 281,
+      "sha256": "1bf79779cdd73500df218dd0955ed294a5bee67463748cbe584f7e62e92e34a1"
+    },
+    "source/name.safetensors": {
+      "bytes": 10174856,
+      "sha256": "128a333c2bae3ebfc105b96f993936bd5a8a27eaf2a43c6f19f56c317b9879aa"
+    }
+  },
+  "configuration": {
+    "INE_OCR_PADDLE_TIER": "small",
+    "INE_OCR_PADDLE_CPU_THREADS": "2",
+    "INE_OCR_PADDLE_ENABLE_MKLDNN": "0",
+    "INE_OCR_NAME_MODEL_THRESHOLD": "0.9",
+    "INE_OCR_NAME_MODEL_CPU_THREADS": "1",
+    "INE_OCR_CROSS_CHANNEL_NAME_CONSENSUS": "1",
+    "INE_OCR_FRONT_ROI_SIDECAR": "0"
+  },
+  "paths": {
+    "INE_OCR_YOLO_MODEL_PATH": "card/ine-card.onnx",
+    "INE_OCR_NAME_MODEL_PATH": "name/ine-names.onnx",
+    "INE_OCR_RECOGNITION_ONNX_DIR": "recognition"
+  }
+}

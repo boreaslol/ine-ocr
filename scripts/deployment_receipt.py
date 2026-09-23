@@ -17,6 +17,8 @@ def verify_container(container, manifest, *, commit, image_sha256):
         "dropped_capabilities": container["HostConfig"]["CapDrop"] == ["ALL"],
         "revision_label": container["Config"]["Labels"]["org.opencontainers.image.revision"] == commit,
         "manifest_commit": manifest["release_commit"] == commit,
+        "r2_profile": manifest.get("profile") == "r2-v1",
+        "r2_weights": bool(manifest.get("fine_tuned_models_included")) and len(manifest.get("r2_model_sha256", {})) == 13,
     }
     for name, passed in checks.items():
         if not passed:

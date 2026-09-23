@@ -114,6 +114,9 @@ class _LazyDocumentPipeline:
             if self._ready:
                 return
             try:
+                if os.getenv("INE_OCR_PROFILE") == "r2-v1":
+                    from .r2_profile import verify_runtime
+                    verify_runtime()
                 if self.expected_name_model_sha256 and (
                     not self.name_model_path
                     or sha256_file(self.name_model_path) != self.expected_name_model_sha256
@@ -153,7 +156,7 @@ def create_app(
         raise ValueError("api_bearer_token_invalid")
     recognizer = OnnxMachineLineRecognizer(selected_model) if selected_model else None
     selected_document_pipeline = document_pipeline or _LazyDocumentPipeline()
-    app = FastAPI(title="INE OCR", version="0.1.0")
+    app = FastAPI(title="INE OCR", version="0.2.0")
     app.add_middleware(RequestGate, bearer_token=selected_token)
 
     @app.exception_handler(RequestValidationError)
@@ -203,6 +206,7 @@ def create_app(
     def health():
         return {
             "ok": True,
+            "profile": os.getenv("INE_OCR_PROFILE", "custom"),
             "documentPipeline": "configured",
             "lineRecognizer": "configured" if recognizer is not None else "not_configured",
             "nameModel": "configured" if os.getenv("INE_OCR_NAME_MODEL_PATH") else "disabled",
@@ -236,6 +240,7 @@ def create_app(
         return {
             "ok": True,
             "documentPipeline": "ready",
+            "profile": os.getenv("INE_OCR_PROFILE", "custom"),
             "lineRecognizer": "configured" if recognizer is not None else "not_configured",
             "nameModel": "configured" if os.getenv("INE_OCR_NAME_MODEL_PATH") else "disabled",
             "crossChannelNameConsensus": getattr(

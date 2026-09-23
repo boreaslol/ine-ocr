@@ -7,7 +7,7 @@
 | `GET /healthz` | None | Process liveness and release metadata; not model readiness |
 | `GET /readyz` | Bearer | Loads/warms the configured OCR, preprocessor and QR decoder; 503 if unavailable |
 | `POST /v1/ine/extract` | Bearer | Full document field extraction |
-| `POST /v1/ine/recognize-machine-line` | Bearer | Optional BYOM experiment; returns 503 in the public default profile |
+| `POST /v1/ine/recognize-machine-line` | Bearer | Optional BYOM experiment; returns 503 in the frozen R2 profile |
 
 Extraction body is JSON: `id` is the required front image in base64; `idReverso` is an optional back image in base64. A base64 data URI is also accepted. Remote URLs and PDF files are not an input contract; use decoded raster images such as JPEG or PNG.
 

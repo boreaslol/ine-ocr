@@ -1,9 +1,13 @@
 INE OCR
 
-This distribution provides an independently deployable public-base-model OCR service.
+This distribution provides an independently deployable R2 OCR service under AGPL-3.0-only.
+It includes fine-tuned name and card-detector weights, with no private deployment data.
+The card architecture and model are based on Ultralytics YOLOv8n, AGPL-3.0.
 It uses PaddleOCR/PaddlePaddle and OpenCV WeChatQRCode components and public models.
 Their licenses and attribution remain with their respective upstream projects.
 See THIRD_PARTY.md and licenses/ for source references and license texts.
+The original base-only code was distributed under Apache-2.0; that notice and
+license remain in licenses/Apache-2.0-original.txt and the original Git history.
 
 INE names and marks belong to their respective owners. No affiliation or endorsement
 by the Instituto Nacional Electoral is claimed.
