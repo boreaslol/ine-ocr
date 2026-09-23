@@ -1,0 +1,9 @@
+INE OCR
+
+This distribution provides an independently deployable public-base-model OCR service.
+It uses PaddleOCR/PaddlePaddle and OpenCV WeChatQRCode components and public models.
+Their licenses and attribution remain with their respective upstream projects.
+See THIRD_PARTY.md and licenses/ for source references and license texts.
+
+INE names and marks belong to their respective owners. No affiliation or endorsement
+by the Instituto Nacional Electoral is claimed.

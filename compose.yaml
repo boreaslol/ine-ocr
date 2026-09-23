@@ -1,0 +1,32 @@
+services:
+  ocr:
+    build:
+      context: .
+      dockerfile: deploy/Containerfile
+      args:
+        OCR_BUILD_COMMIT: ${RELEASE_COMMIT:?Use scripts/deploy.sh}
+        OCR_BUILD_TAG: ${RELEASE_TAG:?Use scripts/deploy.sh}
+        OCR_BUILD_TIME: ${RELEASE_BUILD_TIME:?Use scripts/deploy.sh}
+    image: ine-ocr:${RELEASE_TAG:?Use scripts/deploy.sh}
+    environment:
+      INE_OCR_API_BEARER_TOKEN: ${INE_OCR_API_BEARER_TOKEN:?Run python3 scripts/setup_env.py}
+      RELEASE_ARTIFACT_SHA256: ${RELEASE_ARTIFACT_SHA256:-build-not-started}
+    ports:
+      - "127.0.0.1:8100:8100"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=512m,mode=1777
+    cpus: 2
+    mem_limit: 6g
+    memswap_limit: 6g
+    pids_limit: 128
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "2"

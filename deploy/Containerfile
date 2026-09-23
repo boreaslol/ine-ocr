@@ -1,0 +1,53 @@
+FROM python:3.12-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PADDLE_PDX_CACHE_HOME=/opt/models/paddlex \
+    INE_OCR_WECHAT_QR_MODEL_DIR=/opt/models/wechat \
+    PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK=True \
+    INE_OCR_PADDLE_TIER=small \
+    INE_OCR_PADDLE_CPU_THREADS=2 \
+    INE_OCR_PADDLE_ENABLE_MKLDNN=0 \
+    OMP_NUM_THREADS=1 \
+    OPENBLAS_NUM_THREADS=1 \
+    INE_OCR_HOST=0.0.0.0 \
+    INE_OCR_PORT=8100 \
+    HOME=/tmp \
+    TMPDIR=/tmp
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates libgl1 libglib2.0-0 libgomp1 \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd --gid 10001 ocr \
+    && useradd --uid 10001 --gid ocr --no-create-home ocr
+
+WORKDIR /opt/ine-ocr
+COPY deploy/requirements.cpu.txt ./deploy/requirements.cpu.txt
+RUN python -m pip install -r deploy/requirements.cpu.txt
+COPY pyproject.toml README.md LICENSE NOTICE THIRD_PARTY.md ./
+COPY licenses ./licenses
+COPY src ./src
+COPY scripts ./scripts
+COPY deploy/public-models.json ./deploy/public-models.json
+RUN python -m pip install --no-deps . \
+    && python scripts/fetch_wechat_qr_models.py \
+    && python scripts/prepare_models.py \
+    && chown -R ocr:ocr /opt/models /opt/ine-ocr
+
+ARG OCR_BUILD_COMMIT=uncommitted
+ARG OCR_BUILD_TAG=local
+ARG OCR_BUILD_TIME=unknown
+ENV RELEASE_COMMIT=${OCR_BUILD_COMMIT} \
+    RELEASE_TAG=${OCR_BUILD_TAG} \
+    RELEASE_BUILD_TIME=${OCR_BUILD_TIME}
+LABEL org.opencontainers.image.source=https://github.com/boreaslol/ine-ocr \
+    org.opencontainers.image.revision=${OCR_BUILD_COMMIT} \
+    org.opencontainers.image.licenses=Apache-2.0
+RUN python scripts/verify_runtime.py --output /opt/ine-ocr/runtime-manifest.json
+
+USER ocr
+EXPOSE 8100
+HEALTHCHECK --interval=30s --timeout=25s --start-period=120s --retries=3 \
+    CMD ["python", "/opt/ine-ocr/scripts/healthcheck.py"]
+CMD ["python", "-m", "uvicorn", "ine_ocr.api:app", "--host", "0.0.0.0", "--port", "8100", "--workers", "1", "--no-access-log"]

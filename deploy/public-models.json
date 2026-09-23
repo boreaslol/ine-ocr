@@ -1,0 +1,16 @@
+{
+  "schema": "public-base-models-v1",
+  "license": "Apache-2.0",
+  "model_cards": {
+    "PP-OCRv6_small_det": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_det",
+    "PP-OCRv6_small_rec": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec"
+  },
+  "sha256": {
+    "PP-OCRv6_small_det/inference.json": "89240f689a4a77aad75ef55a8df0a15c8e1d4980a327d17e58f24bbadde5aeab",
+    "PP-OCRv6_small_det/inference.pdiparams": "5043d4ccc8d63402ccea8feefcee4db57077431a873e78d2191836a178a492da",
+    "PP-OCRv6_small_det/inference.yml": "193f435274bf9f0b5f71a929bbfbcf148282df7e633b34e7c373e8f44741b516",
+    "PP-OCRv6_small_rec/inference.json": "f0bf53c853937a917affdd74467472167727f8ab0f0f7bded01c4a16c27e46e6",
+    "PP-OCRv6_small_rec/inference.pdiparams": "406e1e689c9a7fbb04178007a3fe10cf852afe7bf8bb3bc6dbb9d532b13bd907",
+    "PP-OCRv6_small_rec/inference.yml": "ab078671bb49f06228eadccd34f1bb501e157f7a047095ffb943ba81512c77d1"
+  }
+}

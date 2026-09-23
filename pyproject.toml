@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=77,<82"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ine-ocr"
+version = "0.1.0"
+description = "Self-hosted CPU OCR and structured field extraction for Mexican INE documents"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE", "licenses/*"]
+dependencies = ["numpy>=1.26,<3", "Pillow>=10.4,<13", "PyYAML>=6,<7", "fastapi>=0.135,<0.136", "uvicorn>=0.42,<0.43"]
+
+[project.optional-dependencies]
+cpu = ["opencv-contrib-python==4.10.0.84", "paddlepaddle==3.3.1", "paddleocr==3.7.0", "paddlex[ocr]==3.7.2", "onnxruntime>=1.23,<2"]
+dev = ["pytest>=8,<9", "httpx>=0.28,<0.29"]
+
+[project.urls]
+Repository = "https://github.com/boreaslol/ine-ocr"
+Issues = "https://github.com/boreaslol/ine-ocr/issues"
+
+[project.scripts]
+ine-ocr-serve = "ine_ocr.api:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
